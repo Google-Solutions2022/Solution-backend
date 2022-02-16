@@ -16,7 +16,7 @@ const userSchema = new Schema({
         required: true
     },
     phoneNumber: {
-        type: number,
+        type: Number,
     },
     role: {
         type: String,
@@ -28,8 +28,8 @@ const userSchema = new Schema({
         required: true
     },
     dob: {
-        type: Date,
-        required: true
+        type: Date
+        // required: true
     },
     doc: {
         type: Array,
@@ -47,5 +47,5 @@ const userSchema = new Schema({
     { timestamps: true }
 );
 
-const User = new mongoose.Schema("users", userSchema);
-export default User;
+const User = mongoose.model("user", userSchema);
+module.exports = User;
