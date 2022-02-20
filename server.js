@@ -10,6 +10,7 @@ app.get('/', ()=>{
 })
 
 app.use('/api/auth', require('./routes/AuthRoute'))
+app.use('/api/userInfo', require('./routes/UserInfo'))
 
 
 const port = process.env.PORT || 5000;
