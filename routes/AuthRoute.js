@@ -5,14 +5,16 @@ const bodyParser = require("body-parser"); // importing bodyParser
 const { body, validationResult } = require("express-validator");
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
-
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
-
 const User = require('../models/userModels'); //importing schema
+
+
 
 router.use(bodyParser.json()) //using body parser
 router.use(cookieParser());
+
+
 
 //creating user register api: /auth/register
 router.post("/register",
@@ -69,6 +71,9 @@ router.post("/register",
             .catch((err) => {
                 res.status(500).json({ msg: "Internal Server Error" });
             })
-    })
+    }
+)
+
+
 
 module.exports = router
