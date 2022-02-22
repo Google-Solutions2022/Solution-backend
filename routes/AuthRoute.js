@@ -14,9 +14,7 @@ const User = require('../models/userModels'); //importing schema
 router.use(bodyParser.json()) //using body parser
 router.use(cookieParser());
 
-
-
-//creating user register api: /auth/register
+//creating user register api: /api/auth/register
 router.post("/register",
     // email must be an email
     body('email').isEmail(),
@@ -75,5 +73,51 @@ router.post("/register",
 )
 
 
+
+//creating user register api: /api/auth/login
+router.post("/login",
+    //checking email
+    body('email').isEmail(), 
+    //checking password length
+    body('password').isLength({ min: 6 })
+    , async (req, res) => {
+        console.log("Incoming Login Request");
+        //checkingg for request error
+        const errors = validationResult(req);
+        if(!errors.isEmpty()) {
+            return res.status(400).json({err: errors.array()});
+        }
+
+        //sorting data from body
+        const {email, password} = req.body;
+        if(!(email && password)) {
+            return res.status(400).json({err: "Please enter all the required credentials"});
+        }
+
+        //finding email in db
+        User.findOne({email: email})
+        .then((user) => {
+            //finding user in db
+            if (user === null) {
+                return res.status(403).json({ Eror: "Invalid Credentails: Email not found" })
+            }
+
+            const comPass = bcrypt.compareSync(password, user.password);
+            if(!comPass) {
+                return res.status(400).json({err: "Invalid Credentails"})
+            }
+
+            const userToken = jwt.sign({ userId: user._id }, "workingonGoogleSolutionChallenge");
+
+            res.cookie("userToken", userToken, {
+                httpOnly: true,
+            });
+
+            res.status(200).json({userToken: userToken})
+
+        }).catch((err) => {
+            res.status(500).json({ msg: "Internal Server Error" })
+        })
+    })
 
 module.exports = router
