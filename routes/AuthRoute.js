@@ -8,18 +8,22 @@ const cookieParser = require('cookie-parser');
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
 const User = require('../models/userModels'); //importing schema
+const AuthController = require("../controllers/AuthController");
 
 
 
 router.use(bodyParser.json()) //using body parser
 router.use(cookieParser());
 
+
+router.get("/", AuthController.protect, AuthController.getUserFromToken);
+
 //creating user register api: /api/auth/register
 router.post("/register",
     // email must be an email
     body('email').isEmail(),
     // password must be at least 5 chars long
-    body('password').isLength({ min: 6 }),
+    // body('password').isLength({ min: 6 }),
     async (req, res) => {
         console.log("Incoming Request");
 
@@ -79,7 +83,7 @@ router.post("/register",
             })
             .catch((err) => {
                 //sending response Internal server error
-                res.status(500).json({ msg: "Internal Server Error" });
+                res.status(500).json({ msg: err.message });
             })
     }
 )
