@@ -93,53 +93,53 @@ router.post("/register",
 //creating user register api: /api/auth/login
 router.post("/login",
     //checking email
-    body('email').isEmail(), 
+    body('email').isEmail(),
     //checking password length
-    body('password').isLength({ min: 6 })
-    , async (req, res) => {
+    // body('password').isLength({ min: 6 }),
+    async (req, res) => {
         console.log("Incoming Login Request");
         //checkingg for request error
         const errors = validationResult(req);
-        if(!errors.isEmpty()) {
-            return res.status(400).json({err: errors.array()});
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ err: errors.array() });
         }
 
         //sorting data from body
-        const {email, password} = req.body;
-        if(!(email && password)) {
-            return res.status(400).json({err: "Please enter all the required credentials"});
+        const { email, password } = req.body;
+        if (!(email && password)) {
+            return res.status(400).json({ err: "Please enter all the required credentials" });
         }
 
         //finding email in db
-        User.findOne({email: email})
-        .then((user) => {
-            //finding user in db
-            if (user === null) {
-                return res.status(403).json({ Eror: "Invalid Credentails: Email not found" })
-            }
+        User.findOne({ email: email })
+            .then((user) => {
+                //finding user in db
+                if (user === null) {
+                    return res.status(403).json({ Eror: "Invalid Credentails: Email not found" })
+                }
 
-            //comparing password 
-            const comPass = bcrypt.compareSync(password, user.password);
-            
-            if(!comPass) {
-                return res.status(400).json({err: "Invalid Credentails"})
-            }
+                //comparing password 
+                const comPass = bcrypt.compareSync(password, user.password);
 
-            //creating jwt token
-            const userToken = jwt.sign({ userId: user._id }, "workingonGoogleSolutionChallenge");
+                if (!comPass) {
+                    return res.status(400).json({ err: "Invalid Credentails" })
+                }
 
-            //creating cookie named userToken
-            res.cookie("userToken", userToken, {
-                httpOnly: true,
-            });
+                //creating jwt token
+                const userToken = jwt.sign({ userId: user._id }, "workingonGoogleSolutionChallenge");
 
-            //sending response sucess
-            res.status(200).json({userToken: userToken})
-            
-        }).catch((err) => {
-            //sending response error
-            res.status(500).json({ msg: "Internal Server Error" })
-        })
+                //creating cookie named userToken
+                res.cookie("userToken", userToken, {
+                    httpOnly: true,
+                });
+
+                //sending response sucess
+                res.status(200).json({ userToken: userToken })
+
+            }).catch((err) => {
+                //sending response error
+                res.status(500).json({ msg: "Internal Server Error", err: err })
+            })
     })
 
 module.exports = router

@@ -12,7 +12,9 @@ exports.protect = async (req, res, next ) => {
   
     try {
       const decoded = jwt.verify(token, "workingonGoogleSolutionChallenge" );
-      req.user = decoded.id;
+
+      // console.log(decoded.userId);
+      req.user = decoded.userId;
       next();
     } catch (err) {
       console.log(err.message);
@@ -23,8 +25,12 @@ exports.protect = async (req, res, next ) => {
 
   exports.getUserFromToken = async (req, res) => {
     try {
-      const user = await User.findById(req.user).select("-password");
+      // console.log(req.user);
+
+
+      const user = await User.findById(req.user)
       res.json({ status: "success", data: { user } });
+      
     } catch (err) {
       console.error(err.message);
       res.status(500).json({ status: "fail", msg: "Server Error" });
