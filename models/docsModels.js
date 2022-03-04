@@ -3,23 +3,32 @@ const { Schema } = mongoose;
 
 const docsSchema = new Schema({
     userId: {
-        type:mongoose.Schema.ObjectId,
-        ref: users
-    },
-    for: {
         type: String,
-        enum: ["law", "medical"]
+        // ref: "user",
+        required: true,
+        
+    },
+    type: {
+        type: String,
+        default: "user",
+        enum: ["user", "law", "medical"],
+        required: true,
+
     },
     docLink: {
         type: String,
         required: true
     },
     uploadedBy: {
+        // type: mongoose.Schema.ObjectId,
         type: String,
+        // ref: 'user',
         required: true
     },
     uploadedFor: {
+        // type: mongoose.Schema.ObjectId,
         type: String,
+        // ref: 'user',
         required: true
     },
     docName: {
@@ -30,5 +39,5 @@ const docsSchema = new Schema({
     { timestamps: true }
 );
 
-const Docs = new mongoose.Schema("docs", docsSchema);
-export default Docs;
+const Docs = mongoose.model('docs', docsSchema);
+module.exports = Docs;

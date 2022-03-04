@@ -17,6 +17,7 @@ const userSchema = new Schema({
     },
     phoneNumber: {
         type: Number,
+        
     },
     role: {
         type: String,
@@ -47,5 +48,5 @@ const userSchema = new Schema({
     { timestamps: true }
 );
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model('user', userSchema);
 module.exports = User;

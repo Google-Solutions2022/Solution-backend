@@ -12,8 +12,9 @@ app.get('/', ()=>{
     console.log("hi");
 })
 
-app.use('/api/auth', require('./routes/AuthRoute'))
-app.use('/api/userInfo', require('./routes/UserInfo'))
+app.use('/api/auth', require('./routes/AuthRoute'));
+app.use('/api/userInfo', require('./routes/UserInfo'));
+app.use('/api/docs', require("./routes/DocsRoute"));
 
 
 const port = process.env.PORT || 5000;
