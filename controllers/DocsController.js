@@ -62,9 +62,15 @@ exports.upload = async (req, res) => {
 exports.getAllDocOfUser = async (req,res) => {
     try {
 
-        const { userId } = req.body
+        const { userId } = req.params
 
-        // console.log(userId)
+        console.log(userId);
+
+        if(userId == null || userId == ''){
+            return res.status(200).json({msg: "Provide a userId"})
+        }
+
+        // // console.log(req.body);
         const user = await User.findById(userId);
         // console.log(user);
         if(user == null){

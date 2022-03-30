@@ -13,7 +13,7 @@ router.post('/upload', docsController.upload );
 
 
 // get all the law docs of a particular user
-router.get('/getAllDocOfUser', docsController.getAllDocOfUser);
+router.get('/getAllDocOfUser/:userId', docsController.getAllDocOfUser);
 
 
 
