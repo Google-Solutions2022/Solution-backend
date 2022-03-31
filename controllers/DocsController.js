@@ -6,7 +6,7 @@ const User = require("../models/userModels");
 exports.upload = async (req, res) => {
 
     try {
-        const { docLink, docName, uploadedFor, uploadedBy, type, userId } = req.body;
+        const { docLink, docName, uploadedFor, uploadedBy, type } = req.body;
 
         if (docLink == null || docLink == "") {
             return res.status(400).json({ msg: "Provide a Doc Link to upload the file" });

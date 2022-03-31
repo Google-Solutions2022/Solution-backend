@@ -19,7 +19,7 @@ app.use('/api/userInfo', require('./routes/UserInfo'));
 app.use('/api/docs', require("./routes/DocsRoute"));
 
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 app.listen(port , ()=>{
     console.log(`Server running on port: ${port}`);
 });
